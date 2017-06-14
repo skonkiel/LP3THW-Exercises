@@ -1,8 +1,3 @@
-# To Do
-## Figure out how to call style and temperature across all functions
-## Change temperature from str to integer type
-
-
 from sys import exit
 
 badInput = "That's not an answer. Try again"
@@ -23,10 +18,12 @@ def decision():
 
     else:
         print(badInput)
+        decision()
 
 
 def chooseStyle():
-    print("Great! What style? You've got ingredients for porter, IPA, or blonde.")
+    print("What style? You've got ingredients for porter, IPA, or blonde.")
+    global style
     style = input("> ")
 
     if style == "porter":
@@ -39,6 +36,7 @@ def chooseStyle():
         chooseIngred()
     else:
         print(badInput)
+        chooseStyle()
 
 def chooseIngred():
     print("Do you want to add a special ingredient? y/n ")
@@ -48,6 +46,7 @@ def chooseIngred():
         print("Fantastic. What special ingredient do you want to add?")
         print("You've got chocolate, coffee, and lavender")
 
+        global ingredient
         ingredient = input("> ")
         global style
         print(f"You want to make a {ingredient} {style} beer. Awesome.")
@@ -64,6 +63,22 @@ def chooseIngred():
         print(badInput)
         chooseIngred()
 
+def badsan():
+    print("Now we're brewing.....................")
+    print("......................................")
+    print("Now we're tasting.....................")
+    print("......................................")
+    print("YUCK! This beer is spoiled, guess you didn't sanitize correctly!")
+
+def goodsan():
+    global ingredient
+    global style
+    print("Now we're brewing.....................")
+    print("......................................")
+    print("Now we're tasting.....................")
+    print("......................................")
+    print(f"YUM! This {ingredient} {style} is delicious!")
+
 def sanitize():
     print("How do you want to sanitize your equipment?")
     print("Your choices are: heat, sanitzer, no sanitzer")
@@ -72,63 +87,106 @@ def sanitize():
     if desireSan == "heat":
         print("Ok, what temperature (Farhenheit) should we set the autoclave for? > ")
         temperature = input()
-        # Convert temperature from string to integer
+        tempInt = int(temperature)
 
-        if temperature < 170:
-            print("Now we're brewing.....................")
-            print("......................................")
-            print("Now we're tasting.....................")
-            print("......................................")
-            print("YUCK! This beer is spoiled, guess you didn't sanitize correctly!")
+        # check that temperature is a number, if not, throw error
 
-        elif temperature > 212:
+        if tempInt < 170:
+            badsan()
+
+        elif tempInt > 212:
             print("We can't brew because the equipment just melted!!!!!")
 
         else:
-            print("Now we're brewing.....................")
-            print("......................................")
-            print("Now we're tasting.....................")
-            print("......................................")
-            print("YUM! This {ingredient} {style} is delicious!")
-            # Call award function
+            goodsan()
+            award()
 
     elif desireSan == "sanitizer":
         print("Ok, how much sanitizer should we use (in CCs)?")
+        san = input("> ")
 
-#    elif desireSan == "no sanitizer":
+        # check that san is an integer, if not, throw an error
 
-#    elif desireSan == "none":
+        sanInt = int(san)
 
-#    else:
-#        print(badInput)
+        if sanInt < 100:
+            badsan()
+
+        elif sanInt > 500:
+            badsan()
+
+        else:
+            goodsan()
+            award()
+
+    elif desireSan == "no sanitizer":
+        print("Are you sure? y/n ")
+        confirmSan = input()
+
+        if confirmSan == "y":
+            badsan()
+
+        elif confirmSan == "n":
+            sanitize()
+
+        else:
+            print(badInput)
+            sanitize()
+
+    elif desireSan == "none":
+        print("Are you sure? y/n ")
+        confirmSan = input()
+
+        if confirmSan == "y":
+            badsan()
+
+        elif confirmSan == "n":
+            sanitize()
+
+        else:
+            print(badInput)
+            sanitize()
+
+    else:
+        print(badInput)
+        sanitize()
+
+def award():
+    global ingredient
+    global style
+    print(f"I think you should enter your {ingredient} {style} into the State Fair competition.")
+    awardDec = input("Do you want to enter? y/n ")
+
+    if awardDec == "y":
+        awardName = input("What's your name?")
+        awardGender = input("What's your gender?")
+        awardAge = input("What's your age?")
+        awardZip = input("What's your zipcode?")
+
+        if awardGender == "female":
+            print(f"Are you sure you brewed this {ingredient} {style}?")
+            print("Wow, I've never met a woman home brewer before!")
+            print("Well, you've won gold! Congrats. Well-deserved!")
+
+        elif awardGender == "f":
+            print(f"Are you sure you brewed this {ingredient} {style}?")
+            print("Wow, I've never met a woman home brewer before!")
+            print("Well, you've won gold! Congrats. Well-deserved!")
+
+        else:
+            print(f"Your {ingredient} {style} is delicious!")
+            print("The judges are deliberating........")
+            print("...................................")
+            print("...................................")
+            print("The winner is......................")
+            print(f"{awardName}, age {awardAge}, from zip code {awardZip}!")
+            print("CONGRATS!")
+
+    elif awardDec == "n":
+        print("That's too bad! I think you could have won gold!!!")
+
+    else:
+        print(badInput)
+        award()
 
 decision()
-
-
-# If heat, prompt what temperature to set autoclave for (in F)
-
-## If less than 100, return "Now we're brewing, now we're tasting, yuck!"
-
-## If more than 500, return return "Now we're brewing, now we're tasting, yuck!"
-
-## Else return "Now we're brewing, now we're tasting, this  {ingredient} {style} is delicious!"
-## Call award function
-
-# If none, ask are you sure? y/n
-
-## If y, return "Now we're brewing, now we're tasting, yuck!"
-
-## If n, loop back to "How do you want to santize?" function
-
-# Award function
-
-# "I think you shoudl enter your beer into the state fair. y/n"
-
-# If y, ask name, gender, age, zipcode
-
-## If gender = f, print something like "Are you sure you brewed this? this {ingredient} {style} is delicious"
-## Print "wow, I've never met a woman home brewer before"
-## Print "Excellent job. Well-deserved. Hope to see you again next year"
-
-## Else print "Your  {ingredient} {style} is delicious. You've won the gold!"
-## Print "Excellent job. Well-deserved. Hope to see you again next year"
