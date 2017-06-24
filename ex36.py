@@ -1,3 +1,5 @@
+# Microbrews, Microaggressions: This is a text-based game that gives you a taste of the experience of brewing while female
+
 from sys import exit
 
 badInput = "That's not an answer. Try again"
@@ -33,6 +35,7 @@ def chooseStyle():
     elif style == "ipa":
         chooseIngred()
     elif style == "blonde":
+        print("Ooh, sexy blonde! Just kidding. No offense.")
         chooseIngred()
     else:
         print(badInput)
